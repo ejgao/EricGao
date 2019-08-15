@@ -1,0 +1,89 @@
+from urllib.request import urlopen as uReq
+from bs4 import BeautifulSoup as soup
+import time
+my_url="https://www.basketball-reference.com/players/w/westbru01.html"
+#opening up connection
+read_url=uReq(my_url)
+uClient=read_url.read()
+read_url.close()
+#parsing html
+page_soup=soup(uClient, "html.parser")
+names=page_soup.find_all("tr",{"class":"full_table"})
+name=names[0]
+headers=name.find_all("td")
+
+f=open("players.csv","w")
+header="Year, Age, Team, Lg, Pos, G, GS, MP, FGM, FGA, FG%, 3P, 3PA, 3P%, 2P, 2PA, 2P%, EFG%, FTM, FTA, FT%, OReb, DReb, TReb, Assist, Steal, Blk, TOV, PF, Points\n"
+f.write(header)
+
+for name in names:
+    headers=name.find_all("td")
+    years=name.find_all("a")
+    year=years[0].text
+    age=headers[0].text
+    team=headers[1].text
+    league=headers[2].text
+    position=headers[3].text
+    games=headers[4].text
+    games_started=headers[5].text
+    mp=headers[6].text
+    fgm=headers[7].text
+    fga=headers[8].text
+    fg_percent=headers[9].text
+    three_point_made=headers[10].text
+    three_point_attempts=headers[11].text
+    three_point_percentage=headers[12].text
+    two_point_made=headers[13].text
+    two_point_attempts=headers[14].text
+    two_point_percentage=headers[15].text
+    efg=headers[16].text
+    ft_made=headers[17].text
+    ft_attempted=headers[18].text
+    ft_percentage=headers[19].text
+    o_reb=headers[20].text
+    d_reb=headers[21].text
+    t_reb=headers[22].text
+    assist=headers[23].text
+    stl=headers[24].text
+    blk=headers[25].text
+    tov=headers[26].text
+    pf=headers[27].text
+    pts=headers[28].text
+    print("year: "+year)
+    print("age: "+age)
+    print("team: "+team)
+    print("league: "+league)
+    print("position: "+position)
+    print("games: "+games)
+    print("games started: "+games_started)
+    print("minutes played: "+mp)
+    print("field goals: "+fgm)
+    print("field goals attempted: "+fga)
+    print("field goal percentage: "+fg_percent)
+    print("three pointers made: "+three_point_made)
+    print("three pointers attempted: "+three_point_attempts)
+    print("three point percentage: "+three_point_percentage)
+    print("two pointers made: "+two_point_made)
+    print("two pointers attempted: "+two_point_attempts)
+    print("two point percentage: "+two_point_percentage)
+    print("efg percentage: "+efg)
+    print("ft made: "+ft_made)
+    print("ft attempted: "+ft_attempted)
+    print("ft percentage: "+ft_percentage)
+    print("offensive rebound: "+o_reb)
+    print("defensive rebound: "+d_reb)
+    print("total rebounds: "+t_reb)
+    print("total assists: "+assist)
+    print("total steals: "+stl)
+    print("total blocks: "+blk)
+    print("turnovers: "+tov)
+    print("personal fouls: "+pf)
+    print("total points: "+pts)
+    print("\n")
+
+    f.write(year+ "," +age+ ","+team+","+league+","+position+","+games+","+games_started+","+mp+","+fgm+","+fga+","+fg_percent+","+three_point_made+","+three_point_attempts+","+three_point_percentage+","+two_point_made+","+two_point_attempts+","+
+    two_point_percentage+","+efg+","+ft_made+","+ft_attempted+","+ft_percentage+","+o_reb+","+d_reb+","+t_reb+","+assist+","+stl+","+blk+","+tov+","+pf+","+pts+"\n")
+f.close()
+
+time.sleep(0.1)
+
